@@ -2,6 +2,17 @@
 
 # Socket
 
+## Usage
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(socket
+  GIT_REPOSITORY "git@github.com:gecko-robotics/socket.git"
+  GIT_TAG "origin/main"
+  SOURCE_DIR "${CMAKE_BINARY_DIR}/"
+)
+```
 
 # MIT License
 
