@@ -138,20 +138,20 @@ const inetaddr_t filter(const std::string& address) {
 
 template<>
 const unixaddr_t filter(const std::string& address) {
-  std::regex proto("(unix)\\:\\/\\/([a-z,A-Z\\d\\/.*_-:]+)");
+  std::regex fmt("(unix)\\:\\/\\/([a-z,A-Z\\d\\/.*_-:]+)");
   std::smatch m;
 
-  // find [original, protocol, path|ip:port]
-  regex_search(address, m, proto);
+  // find [original, unix, path]
+  regex_search(address, m, fmt);
+
+  if (m.size() != 3) throw std::invalid_argument("invalid format");
+  if (m.str(1) != "unix") throw std::invalid_argument("invalid unix protocol");
+  std::string path = m.str(2);
+
   unixaddr_t ans{0};
-
-  if (m.size() != 3 || m[1] != "unix") throw std::invalid_argument("invalid unix protocol");
-  std::string path = m[2];
-
   ans.sun_family = AF_UNIX;
   strncpy(ans.sun_path, path.c_str(), path.size());
   return ans;
-  // return std::move(ans);
 }
 
 const inetaddr_t inet_sockaddr(const std::string &path) {
