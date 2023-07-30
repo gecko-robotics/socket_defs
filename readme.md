@@ -2,16 +2,30 @@
 
 # Socket
 
+Some common code that a couple of my repos use. This is a header
+only library.
+
 ## Usage
+
+## cmake
+
+You can use `cmake`'s `FetchContent` to download the library and
+add it to your program like this:
 
 ```cmake
 include(FetchContent)
 
-FetchContent_Declare(socket
-  GIT_REPOSITORY "git@github.com:gecko-robotics/socket.git"
+# socket -----------------
+FetchContent_Declare(
+  socket
+  GIT_REPOSITORY "https://github.com/gecko-robotics/socket.git"
   GIT_TAG "origin/main"
-  SOURCE_DIR "${CMAKE_BINARY_DIR}/"
 )
+
+FetchContent_MakeAvailable( socket )
+
+add_executable(${PROJECT_NAME} main.cpp)
+target_link_libraries(${PROJECT_NAME} INTERFACE socket)
 ```
 
 # MIT License

@@ -1,8 +1,6 @@
 
 #pragma once
 
-
-// #include <errno.h>
 #include <string>
 #include <stdint.h>
 #include <sys/socket.h>
@@ -13,7 +11,7 @@
 #include <sys/un.h>     // UDS
 #include <stdexcept>
 
-
+// #include <errno.h>
 // extern int errno; // don't like this global value
 
 // Globals new types --------------------------------------------
@@ -75,15 +73,16 @@ std::ostream& operator<<(std::ostream &os, inetaddr_t const &s) {
   return os;
 }
 
-static
+inline
 std::string unix2string(const unixaddr_t &addr) {
-  if (addr.sun_family == AF_UNIX) return std::string(addr.sun_path);
-  return "not unix";
+  // if (addr.sun_family == AF_UNIX) return std::string(addr.sun_path);
+  // return "not unix";
+  return std::string(addr.sun_path);
 }
 
 static
 std::ostream &operator<<(std::ostream &os, unixaddr_t const &s) {
-  os << "File: " << unix2string(s);
+  os << "unix://" << unix2string(s);
   return os;
 }
 
@@ -94,8 +93,6 @@ const T filter(const std::string& address);
 
 template<>
 const inetaddr_t filter(const std::string& address) {
-  // std::regex proto("(udp|tcp)\\:\\/\\/([a-z,A-Z,\\d,\\/,.,*,_,-,:]+)");
-  // std::regex proto("(udp|tcp):\\/\\/([a-zA-Z\\d.*_-]+):(\\d{1,5})");
   std::regex re("(udp|tcp):\\/\\/([a-zA-Z\\d.*]+):(\\d{1,5})");
   std::smatch m;
   uint16_t port;
@@ -109,17 +106,6 @@ const inetaddr_t filter(const std::string& address) {
   if (m.size() != 4) throw std::invalid_argument("invalid inet protocol");
   if (m[1] == "tcp") throw std::invalid_argument("not handling tcp right now");
   if (m[1] != "udp") throw std::invalid_argument("invalid inet protocol");
-  // std::cerr << m[1] << m.size() << std::endl;
-
-  // uint16_t port;
-  // uint32_t ip;
-  // std::string ss = m[2];
-  // std::regex ipport("([a-z,A-Z,\\d,\\/,.,*]+):([*,\\d]+)");
-  // std::smatch mm;
-
-  // find [original, ip, port]
-  // regex_search(ss, mm, ipport);
-  // if (mm.size() != 3) return ans; //return std::move(ans);
 
   else if (m[2] == "*") ip = INADDR_ANY;
   else if (m[2] == "bc") ip = INADDR_BROADCAST;

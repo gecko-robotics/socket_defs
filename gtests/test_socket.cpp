@@ -14,7 +14,16 @@ TEST(socket, debug) {
 
 TEST(socket, ascii) {
   Ascii a;
-  string s{"hello|9|1234|1.2.3.4"};
+  string s{"hello 9 1234 1.2.3.4"};
+  message_t m = a.encode(s);
+  string ss = a.decode(m);
+
+  EXPECT_TRUE(ss == s);
+}
+
+TEST(socket, raw) {
+  Raw a;
+  string s{"hello 9 1234 1.2.3.4"};
   message_t m = a.encode(s);
   string ss = a.decode(m);
 

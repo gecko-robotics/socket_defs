@@ -24,6 +24,26 @@ class Ascii {
   public:
   message_t encode(const std::string& msg) {
     message_t ret;
+    for (const char& c: msg) {
+      if (c  == ' ') ret.push_back('|');
+      else ret.push_back((char) c);
+    }
+    return ret;
+  }
+  std::string decode(const message_t& msg) {
+    std::string ret;
+    for (const uint8_t& c: msg) {
+      if (c  == '|') ret.push_back(' ');
+      else ret.push_back((char) c);
+    }
+    return ret;
+  }
+};
+
+class Raw {
+  public:
+  message_t encode(const std::string& msg) {
+    message_t ret;
     // memcpy(ret.data(), msg.data(), msg.size()); // segfault linux
     for (const char& c: msg) ret.push_back((uint8_t) c);
     // return std::move(ret);
