@@ -101,7 +101,7 @@ const inetaddr_t filter(const std::string& address) {
   uint16_t port;
   uint32_t ip;
 
-  // find [original, protocol, path|ip:port]
+  // find [original, protocol, ip, port]
   regex_search(address, m, re);
   inetaddr_t ans{0};
   ans.sin_family = AF_ERROR;
@@ -138,7 +138,7 @@ const inetaddr_t filter(const std::string& address) {
 
 template<>
 const unixaddr_t filter(const std::string& address) {
-  std::regex fmt("(unix)\\:\\/\\/([a-z,A-Z\\d\\/.*_-:]+)");
+  std::regex fmt("(unix)\\:\\/\\/([a-zA-Z\\d\\/.*_-:]+)");
   std::smatch m;
 
   // find [original, unix, path]

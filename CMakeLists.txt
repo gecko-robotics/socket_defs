@@ -29,9 +29,15 @@ else()
     set(BUILD_GTESTS OFF)
 endif()
 
+message(STATUS ">> ${${PROJECT_NAME}_SOURCE_DIR}")
+
 # Library =====================================================================
 add_library(${PROJECT_NAME} INTERFACE)
-target_include_directories(${PROJECT_NAME} INTERFACE src/)
+target_include_directories(${PROJECT_NAME}
+    INTERFACE src/
+    $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/src>
+    # $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
 # Examples ====================
 # message(STATUS "Building ${PROJECT_NAME} examples is ${BUILD_EXAMPLES}")

@@ -71,6 +71,10 @@ TEST(socket, unix) {
   // cout << path << " " << s << endl;
   EXPECT_TRUE(path == ("unix://" + s));
 
+  EXPECT_NO_THROW(
+  u = unix_sockaddr("unix://./sock.uds")
+  );
+
   EXPECT_THROW({
     path = "udp://1.2.3.4:1234";
     u = unix_sockaddr(path);
