@@ -1,9 +1,10 @@
 # GTest -----------------
 include(FetchContent)
 FetchContent_Declare(gtest
-  GIT_REPOSITORY "https://github.com/google/googletest"
-  GIT_TAG "origin/main"
-  SOURCE_DIR "${CMAKE_BINARY_DIR}/_deps/gtest"
+#   GIT_REPOSITORY "https://github.com/google/googletest"
+#   GIT_TAG "origin/main"
+#   SOURCE_DIR "${CMAKE_BINARY_DIR}/_deps/gtest"
+    URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
 )
 # set(EXAMPLES OFF CACHE INTERNAL "Dont build examples")
 FetchContent_MakeAvailable(gtest)
