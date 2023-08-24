@@ -75,6 +75,8 @@ const inetaddr_t inet6_sockaddr(const std::string &addr, uint16_t port) {
   return inet;
 }
 
+// to_string ]------------------------------------------------------
+
 static
 std::string inet2string(const inetaddr_t &addr) {
   char ip[32]{0};
@@ -89,18 +91,30 @@ std::string inet2string(const inetaddr_t &addr) {
   return "not inet";
 }
 
+inline
+std::string unix2string(const unixaddr_t &addr) {
+  if (addr.sun_family != AF_UNIX) return "";
+  // if (addr.sun_family == AF_UNIX) return std::string(addr.sun_path);
+  // return "not unix";
+  return std::string(addr.sun_path);
+}
+
+// Operators ]-----------------------------------------------------
 static
 std::ostream& operator<<(std::ostream &os, inetaddr_t const &s) {
   os << inet2string(s);
   return os;
 }
 
-inline
-std::string unix2string(const unixaddr_t &addr) {
-  // if (addr.sun_family == AF_UNIX) return std::string(addr.sun_path);
-  // return "not unix";
-  return std::string(addr.sun_path);
-}
+// static
+// std::ostream &operator<<(std::ostream &os, SockAddr const &s) {
+//   sa_family_t type = s.inet.sin_family;
+//   if (type == AF_INET) os << inet2string(s.inet);
+//   else if (type == AF_UNIX) os <<  s.unix.sun_path;
+//   else if (type == AF_ERROR) os << "ERROR";
+//   else os << "UNKNOWN";
+//   return os;
+// }
 
 static
 std::ostream &operator<<(std::ostream &os, unixaddr_t const &s) {
@@ -108,6 +122,7 @@ std::ostream &operator<<(std::ostream &os, unixaddr_t const &s) {
   return os;
 }
 
+// Filtering URI Paths ]------------------------------------------------
 
 template<typename T>
 static
@@ -161,6 +176,8 @@ const unixaddr_t filter(const std::string& address) {
   strncpy(ans.sun_path, path.c_str(), path.size());
   return ans;
 }
+
+// Converters ]------------------------------------------------
 
 const inetaddr_t inet_sockaddr(const std::string &path) {
   // return std::move(filter<inetaddr_t>(path));
