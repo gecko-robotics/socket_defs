@@ -1,6 +1,6 @@
 // https://google.github.io/googletest/primer.html
 #include <gtest/gtest.h>
-#include <socket.hpp>
+#include <socket_defs.hpp>
 #include <string>
 #include <iostream>
 
