@@ -178,12 +178,13 @@ const unixaddr_t filter(const std::string& address) {
 }
 
 // Converters ]------------------------------------------------
-
+inline
 const inetaddr_t inet_sockaddr(const std::string &path) {
   // return std::move(filter<inetaddr_t>(path));
   return filter<inetaddr_t>(path);
 }
 
+inline
 const unixaddr_t unix_sockaddr(const std::string &path) {
   // return std::move(filter<unixaddr_t>(path));
   return filter<unixaddr_t>(path);
