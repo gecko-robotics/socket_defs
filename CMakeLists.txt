@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.22.0)
-project(socket VERSION 2023.07.21.0 LANGUAGES CXX)
+project(socket_defs VERSION 2023.07.21.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+include(FetchContent)
 
 if(PROJECT_IS_TOP_LEVEL)
     cmake_host_system_information(RESULT HOST QUERY HOSTNAME)
@@ -23,19 +25,26 @@ if(PROJECT_IS_TOP_LEVEL)
 
     set(BUILD_EXAMPLES ON)
     set(BUILD_TESTS ON)
+
+    FetchContent_Declare(
+        gtest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+    )
 else()
     message(STATUS "-> ${PROJECT_NAME} is submodule")
     set(BUILD_EXAMPLES OFF)
     set(BUILD_GTESTS OFF)
 endif()
 
-message(STATUS ">> ${${PROJECT_NAME}_SOURCE_DIR}")
+message(STATUS "->> ${${PROJECT_NAME}_SOURCE_DIR}")
+message(STATUS "->> ${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Library =====================================================================
 add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(${PROJECT_NAME}
     INTERFACE src/
-    $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/src>
+    # $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     # $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
