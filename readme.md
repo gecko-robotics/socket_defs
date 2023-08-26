@@ -1,6 +1,6 @@
 <img src="docs/socket.svg" width="300px">
 
-# Socket
+# Socket Definitions
 
 Some common code that a couple of my repos use. This is a header
 only library.
