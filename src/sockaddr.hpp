@@ -30,7 +30,7 @@ SOFTWARE.
 #include <arpa/inet.h> // inet_sockaddr
 #include <ostream>
 #include <regex>
-#include <sys/un.h>     // UDS
+#include <sys/un.h>    // UDS
 #include <stdexcept>
 
 // #include <errno.h>

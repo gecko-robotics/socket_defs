@@ -14,6 +14,10 @@ only library.
   - `inetaddr_t`: takes `udp://1.2.3.4:56789` and converts into socket descriptor info
     - Doesn't support TCP right now
   - `unixaddr_t`: takes `unix:/my/cool/path/file.uds`
+- Messages which are transmitted between sockets.
+  - pack: templated function that does `pack<struct>(struct)` --> `message_t`
+  - unpack: templated function that does `unpack<struct>(message_t)` --> `struct`
+  - debugging to convert `message_t` --> `std::string` and support `std::ostream` with `<<`
 
 
 ## Usage
