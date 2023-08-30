@@ -60,6 +60,11 @@ class Ascii {
     }
     return ret;
   }
+
+  inline
+  message_t pack(const std::string& a) { return encode(a); }
+  inline
+  std::string unpack(const message_t& m) { return decode(m); }
 };
 
 class Raw {
@@ -78,6 +83,11 @@ class Raw {
     // return std::move(ret);
     return ret;
   }
+
+  inline
+  message_t pack(const std::string& s) { return encode(s); }
+  inline
+  std::string unpack(const message_t& m) { return decode(m); }
 };
 
 
@@ -156,6 +166,11 @@ class Json {
     }
     return d;
   }
+
+  inline
+  message_t pack(const dict& d) { return encode(d); }
+  inline
+  dict unpack(const message_t& m) { return decode(m); }
 };
 
   // dict decode(const message_t& msg) {

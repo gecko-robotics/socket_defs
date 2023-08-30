@@ -92,6 +92,9 @@ std::string inet2string(const inetaddr_t &addr) {
 }
 
 inline
+std::string to_string(const inetaddr_t &addr) { return inet2string(addr); }
+
+inline
 std::string unix2string(const unixaddr_t &addr) {
   if (addr.sun_family != AF_UNIX) return "";
   // if (addr.sun_family == AF_UNIX) return std::string(addr.sun_path);
@@ -99,10 +102,13 @@ std::string unix2string(const unixaddr_t &addr) {
   return std::string(addr.sun_path);
 }
 
+inline
+std::string to_string(const unixaddr_t &addr) { return unix2string(addr); }
+
 // Operators ]-----------------------------------------------------
 static
-std::ostream& operator<<(std::ostream &os, inetaddr_t const &s) {
-  os << inet2string(s);
+std::ostream& operator<<(std::ostream &os, inetaddr_t const &addr) {
+  os << to_string(addr);
   return os;
 }
 
@@ -117,8 +123,8 @@ std::ostream& operator<<(std::ostream &os, inetaddr_t const &s) {
 // }
 
 static
-std::ostream &operator<<(std::ostream &os, unixaddr_t const &s) {
-  os << "unix://" << unix2string(s);
+std::ostream &operator<<(std::ostream &os, unixaddr_t const &addr) {
+  os << "unix://" << to_string(addr);
   return os;
 }
 

@@ -5,9 +5,22 @@
 Some common code that a couple of my repos use. This is a header
 only library.
 
+- Transport with `pack`/`unpack` or `encode`/`decode` methods to convert to/from
+  source/`message_t`
+  - JSON: super simple string only, ex: `{"hi": "23","something":"something longer"}`
+  - ASCII: human readable text with separators, ex: `"one two three` --> `one,two,three`
+  - RAW: similar to ASCII but no separators, it only changes `char` --> `uint8_t`
+- Socket info:
+  - `inetaddr_t`: takes `udp://1.2.3.4:56789` and converts into socket descriptor info
+    - Doesn't support TCP right now
+  - `unixaddr_t`: takes `unix:/my/cool/path/file.uds`
+
+
 ## Usage
 
+```cpp
 
+```
 
 ## cmake
 
