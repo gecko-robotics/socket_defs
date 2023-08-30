@@ -7,6 +7,8 @@ only library.
 
 ## Usage
 
+
+
 ## cmake
 
 You can use `cmake`'s `FetchContent` to download the library and
@@ -15,17 +17,16 @@ add it to your program like this:
 ```cmake
 include(FetchContent)
 
-# socket -----------------
+# socket_defs -----------------
 FetchContent_Declare(
-  socket
-  GIT_REPOSITORY "https://github.com/gecko-robotics/socket.git"
-  GIT_TAG "origin/main"
+  socket_defs
+  GIT_REPOSITORY "https://github.com/gecko-robotics/socket_defs.git"
 )
 
-FetchContent_MakeAvailable( socket )
+FetchContent_MakeAvailable( socket_defs )
 
 add_executable(${PROJECT_NAME} main.cpp)
-target_link_libraries(${PROJECT_NAME} INTERFACE socket)
+target_link_libraries(${PROJECT_NAME} INTERFACE socket_defs)
 ```
 
 # MIT License
