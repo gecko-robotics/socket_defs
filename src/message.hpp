@@ -26,6 +26,8 @@ SOFTWARE.
 #include <vector>
 // #include <iostream>
 #include <ostream>
+#include <stdio.h> // printing hex, sprintf
+#include <numeric> // std::accumulate
 
 /*
 DEC =    BIN    = HEX
@@ -58,19 +60,57 @@ T unpack(const message_t& m) {
   return std::move(d);
 }
 
+namespace HIDDEN {
+static
+std::string conv_u8(const uint8_t u8) {
+  char ss[4];
+  sprintf(ss, "0x%X", u8);
+  return std::string(ss);
+}
+}
+
+// https://www.techiedelight.com/convert-a-vector-to-a-string-in-cpp/
+[[deprecated("use std::string = to_string(message_t)")]]
 static
 std::string msg2string(const message_t& msg) {
   std::string s;
   if (msg.size() == 0) return s;
-  s += "[";
-  for (const uint8_t& m: msg) {
-    s += std::to_string(int(m));
-    s += ",";
-  }
-  s += "]";
-  return s;
+  // s += "[";
+  // for (const uint8_t& m: msg) {
+  //   // char ss[4]; //std::to_string(int(m));
+  //   // sprintf(ss, "0x%X", m);
+  //   // s += std::string(ss);
+  //   s += conv(m);
+  //   s += ",";
+  // }
+  // s += "]";
+  return std::accumulate(msg.begin()+1, msg.end(), HIDDEN::conv_u8(msg[0]),
+    [](const std::string& a, uint8_t b) {
+      return a + "," + HIDDEN::conv_u8(b);
+    }
+  );
 }
 
+// https://www.techiedelight.com/convert-a-vector-to-a-string-in-cpp/
+static
+std::string to_string(const message_t& msg) {
+  std::string s;
+  if (msg.size() == 0) return s;
+  // s += "[";
+  // for (const uint8_t& m: msg) {
+  //   // s += std::to_string(int(m));
+  //   s += conv(m);
+  //   s += ",";
+  // }
+  // s += "]";
+  return std::accumulate(msg.begin()+1, msg.end(), HIDDEN::conv_u8(msg[0]),
+    [](const std::string& a, uint8_t b) {
+      return a + "," + HIDDEN::conv_u8(b);
+    }
+  );
+}
+
+[[deprecated("use std::string << message_t")]]
 static
 message_t string2msg(const std::string& msg) {
   message_t s;
@@ -82,13 +122,14 @@ message_t string2msg(const std::string& msg) {
 }
 
 static
-std::ostream &operator<<(message_t &msg, const std::string& s) {
-  return os << msg2string(msg);
+message_t &operator<<(message_t &msg, const std::string& s) {
+  for (int i=0; i<s.size(); ++i) msg.push_back((uint8_t)s[i]);
+  return msg;
 }
 
 static
 std::ostream &operator<<(std::ostream &os, message_t const &msg) {
-  return os << msg2string(msg);
+  return os << to_string(msg);
 }
 
 // static
