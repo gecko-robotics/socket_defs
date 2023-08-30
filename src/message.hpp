@@ -82,6 +82,11 @@ message_t string2msg(const std::string& msg) {
 }
 
 static
+std::ostream &operator<<(message_t &msg, const std::string& s) {
+  return os << msg2string(msg);
+}
+
+static
 std::ostream &operator<<(std::ostream &os, message_t const &msg) {
   return os << msg2string(msg);
 }
