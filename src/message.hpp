@@ -24,7 +24,6 @@ SOFTWARE.
 #pragma once
 
 #include <vector>
-// #include <iostream>
 #include <ostream>
 #include <stdio.h> // printing hex, sprintf
 #include <numeric> // std::accumulate
@@ -64,7 +63,7 @@ namespace HIDDEN {
 static
 std::string conv_u8(const uint8_t u8) {
   char ss[4];
-  sprintf(ss, "0x%X", u8);
+  snprintf(ss, 4, "0x%X", u8);
   return std::string(ss);
 }
 }
