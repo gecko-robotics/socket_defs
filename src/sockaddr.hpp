@@ -167,20 +167,26 @@ const inetaddr_t filter(const std::string& address) {
 
 template<>
 const unixaddr_t filter(const std::string& address) {
-  std::regex fmt("(unix)\\:\\/\\/([a-zA-Z\\d\\/.*_-:]+)");
+  std::regex fmt("(unix)\\:\\/\\/([a-zA-Z\\d\\/._\\-:]+)");
   std::smatch m;
+  try {
+    // find [original, unix, path]
+    regex_search(address, m, fmt);
 
-  // find [original, unix, path]
-  regex_search(address, m, fmt);
+    if (m.size() != 3) throw std::invalid_argument("invalid format");
+    if (m.str(1) != "unix") throw std::invalid_argument("invalid unix protocol");
+    std::string path = m.str(2);
 
-  if (m.size() != 3) throw std::invalid_argument("invalid format");
-  if (m.str(1) != "unix") throw std::invalid_argument("invalid unix protocol");
-  std::string path = m.str(2);
+    unixaddr_t ans{0};
+    ans.sun_family = AF_UNIX;
+    strncpy(ans.sun_path, path.c_str(), path.size());
 
-  unixaddr_t ans{0};
-  ans.sun_family = AF_UNIX;
-  strncpy(ans.sun_path, path.c_str(), path.size());
-  return ans;
+    return ans;
+  }
+  catch (std::regex_error e) {
+    std::cout << e.what() << std::endl;
+    return unixaddr_t();
+  }
 }
 
 // Converters ]------------------------------------------------

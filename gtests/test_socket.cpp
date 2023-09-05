@@ -75,27 +75,28 @@ TEST(socket, json_fail) {
   EXPECT_FALSE(d == dd);
 }
 
-// TEST(socket, unix) {
-//   string path = "unix:///path/to/file.udp";
-//   unixaddr_t u;
-//   // u = unix_sockaddr(path);
-//   // string s = unix2string(u);
-//   // cout << path << " " << s << endl;
-//   // EXPECT_TRUE(path == "unix://" + s);
+TEST(socket, unix) {
+  vector<string> unix{
+    "unix:///path/to/file.uds",
+    "unix://hello-there.uds",
+    "unix://./unix.ps.uds"};
 
-//   EXPECT_NO_THROW(
-//     u = unix_sockaddr("unix://./sock.uds")
-//   );
+  for (const string& uds: unix) {
+    unixaddr_t u;
+    EXPECT_NO_THROW(
+      u = unix_sockaddr(uds)
+    );
+  }
 
-//   // EXPECT_THROW({
-//   //   path = "udp://1.2.3.4:1234";
-//   //   u = unix_sockaddr(path);
-//   //   s = unix2string(u);
-//   //   cout << path << " " << s << endl;
-//   //   EXPECT_TRUE(path == ("unix://" + s));
-//   //   },
-//   // std::invalid_argument);
-// }
+  // EXPECT_THROW({
+  //   path = "udp://1.2.3.4:1234";
+  //   u = unix_sockaddr(path);
+  //   s = unix2string(u);
+  //   cout << path << " " << s << endl;
+  //   EXPECT_TRUE(path == ("unix://" + s));
+  //   },
+  // std::invalid_argument);
+}
 
 TEST(socket, inet) {
   string path = "udp://1.2.3.4:12345";
@@ -201,8 +202,9 @@ TEST(socket, message_t) {
   // hex and they don't match!!!
   // "alice ..." != "0x68,0x59, ..."
   string s = "alice and bob";
-  m = string2msg(s);
-  string ss = msg2string(m);
+  // m = string2msg(s);
+  m << s;
+  // string ss = to_string(m);
   // cout << s << " " << ss << endl;
   // cout << s << " " << format("{:#x}", m[0]);
   // EXPECT_TRUE(s == ss);

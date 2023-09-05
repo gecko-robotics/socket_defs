@@ -68,27 +68,27 @@ std::string conv_u8(const uint8_t u8) {
 }
 }
 
-// https://www.techiedelight.com/convert-a-vector-to-a-string-in-cpp/
-[[deprecated("use std::string = to_string(message_t)")]]
-static
-std::string msg2string(const message_t& msg) {
-  std::string s;
-  if (msg.size() == 0) return s;
-  // s += "[";
-  // for (const uint8_t& m: msg) {
-  //   // char ss[4]; //std::to_string(int(m));
-  //   // sprintf(ss, "0x%X", m);
-  //   // s += std::string(ss);
-  //   s += conv(m);
-  //   s += ",";
-  // }
-  // s += "]";
-  return std::accumulate(msg.begin()+1, msg.end(), HIDDEN::conv_u8(msg[0]),
-    [](const std::string& a, uint8_t b) {
-      return a + "," + HIDDEN::conv_u8(b);
-    }
-  );
-}
+// // https://www.techiedelight.com/convert-a-vector-to-a-string-in-cpp/
+// [[deprecated("use std::string = to_string(message_t)")]]
+// static
+// std::string msg2string(const message_t& msg) {
+//   std::string s;
+//   if (msg.size() == 0) return s;
+//   // s += "[";
+//   // for (const uint8_t& m: msg) {
+//   //   // char ss[4]; //std::to_string(int(m));
+//   //   // sprintf(ss, "0x%X", m);
+//   //   // s += std::string(ss);
+//   //   s += conv(m);
+//   //   s += ",";
+//   // }
+//   // s += "]";
+//   return std::accumulate(msg.begin()+1, msg.end(), HIDDEN::conv_u8(msg[0]),
+//     [](const std::string& a, uint8_t b) {
+//       return a + "," + HIDDEN::conv_u8(b);
+//     }
+//   );
+// }
 
 // https://www.techiedelight.com/convert-a-vector-to-a-string-in-cpp/
 static
@@ -109,16 +109,16 @@ std::string to_string(const message_t& msg) {
   );
 }
 
-[[deprecated("use std::string << message_t")]]
-static
-message_t string2msg(const std::string& msg) {
-  message_t s;
-  for (int i=0; i<msg.size(); i++) {
-    // if (msg[i] != '"' && msg[i] != '{' && msg[i] != ' ')
-    s.push_back((uint8_t)msg[i]);
-  }
-  return s;
-}
+// [[deprecated("use std::string << message_t")]]
+// static
+// message_t string2msg(const std::string& msg) {
+//   message_t s;
+//   for (int i=0; i<msg.size(); i++) {
+//     // if (msg[i] != '"' && msg[i] != '{' && msg[i] != ' ')
+//     s.push_back((uint8_t)msg[i]);
+//   }
+//   return s;
+// }
 
 static
 message_t &operator<<(message_t &msg, const std::string& s) {
