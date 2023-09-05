@@ -89,7 +89,7 @@ TEST(socket, unix) {
   }
 
   // EXPECT_THROW({
-  //   path = "udp://1.2.3.4:1234";
+  //   path = "udp://alice*";
   //   u = unix_sockaddr(path);
   //   s = unix2string(u);
   //   cout << path << " " << s << endl;
