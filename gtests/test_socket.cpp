@@ -88,26 +88,25 @@ TEST(socket, unix) {
     );
   }
 
-  // EXPECT_THROW({
-  //   path = "udp://alice*";
-  //   u = unix_sockaddr(path);
-  //   s = unix2string(u);
-  //   cout << path << " " << s << endl;
-  //   EXPECT_TRUE(path == ("unix://" + s));
-  //   },
-  // std::invalid_argument);
+  string path = "unix://alice*"; // value?
+  unixaddr_t u = unix_sockaddr(path);
+  string s = to_string(u);
+  cout << path << " " << s << endl;
+  EXPECT_FALSE(path == ("unix://" + s));
 }
 
 TEST(socket, inet) {
   string path = "udp://1.2.3.4:12345";
   inetaddr_t i = inet_sockaddr(path);
-  string s = inet2string(i);
+  string s = to_string(i);
   EXPECT_TRUE(path == "udp://" + s);
+  EXPECT_EQ(i.sin_addr.s_addr, inet_addr("1.2.3.4"));
+  EXPECT_EQ(i.sin_port, htons(12345));
 
   EXPECT_THROW({
     path = "tcp://1.2.3.4:1234";
     i = inet_sockaddr(path);
-    s = inet2string(i);
+    s = to_string(i);
     },
   std::invalid_argument);
 
@@ -124,7 +123,7 @@ TEST(socket, inet) {
   EXPECT_THROW({
     path = "udp://1.2.3.4";
     i = inet_sockaddr(path);
-    s = inet2string(i);
+    s = to_string(i);
     },
   std::invalid_argument);
 
