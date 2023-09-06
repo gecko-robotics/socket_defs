@@ -91,7 +91,7 @@ TEST(socket, unix) {
   string path = "unix://alice*"; // value?
   unixaddr_t u = unix_sockaddr(path);
   string s = to_string(u);
-  cout << path << " " << s << endl;
+  // cout << path << " " << s << endl;
   EXPECT_FALSE(path == ("unix://" + s));
 }
 
