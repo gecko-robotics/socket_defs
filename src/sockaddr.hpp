@@ -32,6 +32,7 @@ SOFTWARE.
 #include <regex>
 #include <sys/un.h>    // UDS
 #include <stdexcept>
+#include <iostream>
 
 // #include <errno.h>
 // extern int errno; // don't like this global value
