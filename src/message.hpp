@@ -28,19 +28,6 @@ SOFTWARE.
 #include <stdio.h> // printing hex, sprintf
 #include <numeric> // std::accumulate
 
-/*
-DEC =    BIN    = HEX
-240 = 1111 0000 = F0
-170 = 1010 1010 = AA
-85  = 0101 0101 = 55
-15  = 0000 1111 = 0F
-*/
-
-// struct __attribute__((packed)) subscription_t {
-//   uint8_t topic;
-//   uint8_t status;
-// };
-
 using message_t = std::vector<uint8_t>;
 // constexpr uint8_t SUBSCRIBE = 0xAA;
 // constexpr uint8_t UNSUBSCRIBE = 0x55;
@@ -95,13 +82,6 @@ static
 std::string to_string(const message_t& msg) {
   std::string s;
   if (msg.size() == 0) return s;
-  // s += "[";
-  // for (const uint8_t& m: msg) {
-  //   // s += std::to_string(int(m));
-  //   s += conv(m);
-  //   s += ",";
-  // }
-  // s += "]";
   return std::accumulate(msg.begin()+1, msg.end(), HIDDEN::conv_u8(msg[0]),
     [](const std::string& a, uint8_t b) {
       return a + "," + HIDDEN::conv_u8(b);
@@ -130,9 +110,3 @@ static
 std::ostream &operator<<(std::ostream &os, message_t const &msg) {
   return os << to_string(msg);
 }
-
-// static
-// std::ostream& operator<<(std::ostream& s, const message_t& m) {
-//   for (size_t i=0; i<m.size(); ++i) s << (char)m[i];
-//   return s;
-// }

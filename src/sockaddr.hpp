@@ -31,7 +31,7 @@ SOFTWARE.
 #include <ostream>
 #include <regex>
 #include <sys/un.h>    // UDS
-#include <stdexcept>
+// #include <stdexcept>
 #include <iostream>
 
 // #include <errno.h>
@@ -48,7 +48,7 @@ struct group_t {
   uint16_t port;
 };
 
-using sockaddr_t = struct sockaddr;
+using sockaddr_t = struct sockaddr; // value?
 using inetaddr_t = struct sockaddr_in; // udp or tcp
 using unixaddr_t = struct sockaddr_un; // uds
 using socket_fd_t = int; // socket descriptor
@@ -60,7 +60,6 @@ const inetaddr_t inet_sockaddr(const std::string &addr, uint16_t port) {
   inet.sin_family      = AF_INET;
   inet.sin_addr.s_addr = inet_addr(addr.c_str());
   inet.sin_port        = htons(port);
-  // return std::move(inet);
   return inet;
 }
 
@@ -72,25 +71,10 @@ const inetaddr_t inet_sockaddr(const group_t grp) {
 static
 const inetaddr_t inet6_sockaddr(const std::string &addr, uint16_t port) {
   inetaddr_t inet{0};
-  // return std::move(inet);
   return inet;
 }
 
 // to_string ]------------------------------------------------------
-
-// static
-// std::string inet2string(const inetaddr_t &addr) {
-//   char ip[32]{0};
-
-//   if (addr.sin_family == AF_INET) {
-//     ::inet_ntop(AF_INET, &(addr.sin_addr),ip,sizeof(ip));
-//     std::string host(ip,strlen(ip));
-//     host += ":" + std::to_string(ntohs(addr.sin_port));
-//     return host;
-//   }
-//   else if (addr.sin_family == AF_INET6) { return "ipv6 unsupported"; }
-//   return "not inet";
-// }
 
 inline
 std::string to_string(const inetaddr_t &addr) {
@@ -106,19 +90,9 @@ std::string to_string(const inetaddr_t &addr) {
   return "not inet";
 }
 
-// inline
-// std::string unix2string(const unixaddr_t &addr) {
-//   if (addr.sun_family != AF_UNIX) return "";
-//   // if (addr.sun_family == AF_UNIX) return std::string(addr.sun_path);
-//   // return "not unix";
-//   return std::string(addr.sun_path);
-// }
-
 inline
 std::string to_string(const unixaddr_t &addr) {
   if (addr.sun_family != AF_UNIX) return "";
-  // if (addr.sun_family == AF_UNIX) return std::string(addr.sun_path);
-  // return "not unix";
   return std::string(addr.sun_path);
 }
 
@@ -128,16 +102,6 @@ std::ostream& operator<<(std::ostream &os, inetaddr_t const &addr) {
   os << to_string(addr);
   return os;
 }
-
-// static
-// std::ostream &operator<<(std::ostream &os, SockAddr const &s) {
-//   sa_family_t type = s.inet.sin_family;
-//   if (type == AF_INET) os << inet2string(s.inet);
-//   else if (type == AF_UNIX) os <<  s.unix.sun_path;
-//   else if (type == AF_ERROR) os << "ERROR";
-//   else os << "UNKNOWN";
-//   return os;
-// }
 
 static
 std::ostream &operator<<(std::ostream &os, unixaddr_t const &addr) {
@@ -177,7 +141,6 @@ const inetaddr_t filter(const std::string& address) {
   ans.sin_family      = AF_INET;
   ans.sin_addr.s_addr = ip;
   ans.sin_port        = htons(port);
-  // return std::move(ans);
   return ans;
 }
 
@@ -209,12 +172,10 @@ const unixaddr_t filter(const std::string& address) {
 // Converters ]------------------------------------------------
 inline
 const inetaddr_t inet_sockaddr(const std::string &path) {
-  // return std::move(filter<inetaddr_t>(path));
   return filter<inetaddr_t>(path);
 }
 
 inline
 const unixaddr_t unix_sockaddr(const std::string &path) {
-  // return std::move(filter<unixaddr_t>(path));
   return filter<unixaddr_t>(path);
 }
