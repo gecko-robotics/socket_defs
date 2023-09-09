@@ -11,9 +11,13 @@ only library.
   - ASCII: human readable text with separators, ex: `"one two three` --> `one,two,three`
   - RAW: similar to ASCII but no separators, it only changes `char` --> `uint8_t`
 - Socket info:
-  - `inetaddr_t`: takes `udp://1.2.3.4:56789` and converts into socket descriptor info
+  - `inetaddr_t`: takes `udp://<x.x.x.x|*|bc>:<xxxx|*>` (e.g., `udp://1.2.3.4:56789`)
+    and converts into socket descriptor info
     - Doesn't support TCP right now
-  - `unixaddr_t`: takes `unix:/my/cool/path/file.uds`
+    - Address `*` sets it to `INADDR_ANY` which defaults to `0.0.0.0`
+    - Address `bc` set it to `INADDR_BROADCAST` which is for broadcasting
+    - Port `*` sets it to 0 which tells the kernel to use the first port number available
+  - `unixaddr_t`: takes `unix://./my/cool/path/file.uds`
 - Messages which are transmitted between sockets.
   - pack: templated function that does `pack<struct>(struct)` --> `message_t`
   - unpack: templated function that does `unpack<struct>(message_t)` --> `struct`
