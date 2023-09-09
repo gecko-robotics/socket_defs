@@ -135,7 +135,7 @@ const inetaddr_t filter(const std::string& address) {
   else if (m[2] == "bc") ip = INADDR_BROADCAST;
   else ip = inet_addr(m[2].str().c_str());
 
-  if (m[3] == "*") port = 0;
+  if (m[3] == "*") port = 0; // first open port
   else port = stoi(m[3]);
 
   ans.sin_family      = AF_INET;
