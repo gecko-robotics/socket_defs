@@ -31,11 +31,8 @@ SOFTWARE.
 #include <ostream>
 #include <regex>
 #include <sys/un.h>    // UDS
-// #include <stdexcept>
-#include <iostream>
+#include <unistd.h>  // unlink
 
-// #include <errno.h>
-// extern int errno; // don't like this global value
 
 // Globals new types --------------------------------------------
 constexpr int SOCKET_ERR = -1;
@@ -178,4 +175,14 @@ const inetaddr_t inet_sockaddr(const std::string &path) {
 inline
 const unixaddr_t unix_sockaddr(const std::string &path) {
   return filter<unixaddr_t>(path);
+}
+
+static
+const unixaddr_t unix_sockaddr() {
+  uint64_t msec = 0;
+  using namespace std::chrono;
+  msec = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+  std::string file = "/tmp/" + std::to_string(msec);
+  unlink(file.c_str());
+  return unix_sockaddr("unix://" + file);
 }
