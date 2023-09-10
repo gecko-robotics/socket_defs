@@ -24,6 +24,7 @@ SOFTWARE.
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <stdint.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -72,7 +73,6 @@ const inetaddr_t inet6_sockaddr(const std::string &addr, uint16_t port) {
 }
 
 // to_string ]------------------------------------------------------
-
 inline
 std::string to_string(const inetaddr_t &addr) {
   char ip[32]{0};
@@ -107,7 +107,6 @@ std::ostream &operator<<(std::ostream &os, unixaddr_t const &addr) {
 }
 
 // Filtering URI Paths ]------------------------------------------------
-
 template<typename T>
 static
 const T filter(const std::string& address);
@@ -142,8 +141,6 @@ const inetaddr_t filter(const std::string& address) {
     return ans;
   }
   catch (std::regex_error e) {
-    // std::cout << e.what() << std::endl;
-    // return unixaddr_t();
     throw std::invalid_argument(e.what());
   }
 }
@@ -168,8 +165,6 @@ const unixaddr_t filter(const std::string& address) {
     return ans;
   }
   catch (std::regex_error e) {
-    // std::cout << e.what() << std::endl;
-    // return unixaddr_t();
     throw std::invalid_argument(e.what());
   }
 }
