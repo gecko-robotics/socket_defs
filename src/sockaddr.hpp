@@ -24,7 +24,8 @@ SOFTWARE.
 #pragma once
 
 #include <string>
-#include <string_view>
+#include <cstring>
+// #include <string_view>
 #include <stdint.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -48,8 +49,16 @@ struct group_t {
 
 using sockaddr_t = struct sockaddr; // value?
 using inetaddr_t = struct sockaddr_in; // udp or tcp
-using unixaddr_t = struct sockaddr_un; // uds
+// using unixaddr_t = struct sockaddr_un; // uds
 using socket_fd_t = int; // socket descriptor
+
+struct unixaddr_t: sockaddr_un {
+  public:
+  ~unixaddr_t() {
+    if (std::strlen(sun_path) > 0)
+      std::remove(sun_path);
+  }
+};
 
 
 static

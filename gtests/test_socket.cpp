@@ -3,12 +3,25 @@
 #include <socket_defs.hpp>
 #include <string>
 #include <iostream>
+#include <cstdio> // remove
 // #include <fmt/format.h>
 // #include <format>
 
 using namespace std;
 
 struct data_t { int a; };
+
+// struct Unixaddr_t: sockaddr_un {
+//   public:
+//   ~Unixaddr_t() {
+//     if (strlen(sun_path) > 0)
+//       remove(sun_path);
+//   }
+// };
+
+// TEST(socket, dummy) {
+
+// }
 
 
 TEST(socket, message_t) {
