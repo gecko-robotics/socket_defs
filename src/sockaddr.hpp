@@ -119,26 +119,33 @@ const inetaddr_t filter(const std::string& address) {
   uint16_t port;
   uint32_t ip;
 
-  // find [original, protocol, ip, port]
-  regex_search(address, m, re);
-  inetaddr_t ans{0};
-  ans.sin_family = AF_ERROR;
+  try {
+    // find [original, protocol, ip, port]
+    regex_search(address, m, re);
+    inetaddr_t ans{0};
+    ans.sin_family = AF_ERROR;
 
-  if (m.size() != 4) throw std::invalid_argument("invalid inet protocol");
-  if (m[1] == "tcp") throw std::invalid_argument("not handling tcp right now");
-  if (m[1] != "udp") throw std::invalid_argument("invalid inet protocol");
+    if (m.size() != 4) throw std::invalid_argument("invalid inet protocol");
+    if (m[1] == "tcp") throw std::invalid_argument("not handling tcp right now");
+    if (m[1] != "udp") throw std::invalid_argument("invalid inet protocol");
 
-  else if (m[2] == "*") ip = INADDR_ANY;
-  else if (m[2] == "bc") ip = INADDR_BROADCAST;
-  else ip = inet_addr(m[2].str().c_str());
+    else if (m[2] == "*") ip = INADDR_ANY;
+    else if (m[2] == "bc") ip = INADDR_BROADCAST;
+    else ip = inet_addr(m[2].str().c_str());
 
-  if (m[3] == "*") port = 0; // first open port
-  else port = stoi(m[3]);
+    if (m[3] == "*") port = 0; // first open port
+    else port = stoi(m[3]);
 
-  ans.sin_family      = AF_INET;
-  ans.sin_addr.s_addr = ip;
-  ans.sin_port        = htons(port);
-  return ans;
+    ans.sin_family      = AF_INET;
+    ans.sin_addr.s_addr = ip;
+    ans.sin_port        = htons(port);
+    return ans;
+  }
+  catch (std::regex_error e) {
+    // std::cout << e.what() << std::endl;
+    // return unixaddr_t();
+    throw std::invalid_argument(e.what());
+  }
 }
 
 
@@ -161,8 +168,9 @@ const unixaddr_t filter(const std::string& address) {
     return ans;
   }
   catch (std::regex_error e) {
-    std::cout << e.what() << std::endl;
-    return unixaddr_t();
+    // std::cout << e.what() << std::endl;
+    // return unixaddr_t();
+    throw std::invalid_argument(e.what());
   }
 }
 
