@@ -196,5 +196,10 @@ const unixaddr_t unix_sockaddr() {
   msec = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
   std::string file = "/tmp/" + std::to_string(msec) + ".uds" ;
   unlink(file.c_str());
-  return unix_sockaddr("unix://" + file);
+  // return unix_sockaddr("unix://" + file);
+
+  unixaddr_t ans{0};
+  ans.sun_family = AF_UNIX;
+  strncpy(ans.sun_path, file.c_str(), file.size());
+  return ans;
 }
