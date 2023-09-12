@@ -192,8 +192,8 @@ const unixaddr_t unix_sockaddr(const std::string &path) {
 static
 const unixaddr_t unix_sockaddr() {
   uint64_t msec = 0;
-  using namespace std::chrono;
-  msec = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+  namespace sc = std::chrono;
+  msec = duration_cast<sc::milliseconds>(sc::system_clock::now().time_since_epoch()).count();
   std::string file = "/tmp/" + std::to_string(msec) + ".uds" ;
   unlink(file.c_str());
   // return unix_sockaddr("unix://" + file);
