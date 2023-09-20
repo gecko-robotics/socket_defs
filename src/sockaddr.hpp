@@ -36,6 +36,51 @@ SOFTWARE.
 #include <unistd.h>  // unlink
 
 
+/*
+https://github.com/arduino/ArduinoCore-avr/blob/master/cores/arduino/IPAddress.cpp
+no regex
+
+bool IPAddress::fromString(const char *address)
+{
+    uint16_t acc = 0; // Accumulator
+    uint8_t dots = 0;
+
+    while (*address)
+    {
+        char c = *address++;
+        if (c >= '0' && c <= '9')
+        {
+            acc = acc * 10 + (c - '0');
+            if (acc > 255) {
+                // Value out of [0..255] range
+                return false;
+            }
+        }
+        else if (c == '.')
+        {
+            if (dots == 3) {
+                // Too much dots (there must be 3 dots)
+                return false;
+            }
+            _address.bytes[dots++] = acc;
+            acc = 0;
+        }
+        else
+        {
+            // Invalid char
+            return false;
+        }
+    }
+
+    if (dots != 3) {
+        // Too few dots (there must be 3 dots)
+        return false;
+    }
+    _address.bytes[3] = acc;
+    return true;
+}
+*/
+
 // Globals new types --------------------------------------------
 constexpr int SOCKET_ERR = -1;
 constexpr int SOCKET_TIMEOUT = -1;
